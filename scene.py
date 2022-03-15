@@ -7,6 +7,7 @@ from PyQt5.QtCore import QT_VERSION_STR
 class Scene (QtWidgets.QGraphicsScene) :
     def __init__(self,parent=None) :
         QtWidgets.QGraphicsScene.__init__(self)
+        self.name=None
         self.tool=None
         self.begin,self.end,self.offset=QtCore.QPoint(0,0),QtCore.QPoint(0,0),QtCore.QPoint(0,0)
         self.item=None
@@ -19,6 +20,7 @@ class Scene (QtWidgets.QGraphicsScene) :
         rect.setPen(self.pen)
         rect.setBrush(self.brush)
         self.addItem(rect)
+        self.polygon=[]
         
     def set_tool(self,tool) :
         print("set_tool(self,tool)",tool)
@@ -30,14 +32,20 @@ class Scene (QtWidgets.QGraphicsScene) :
 
     def set_brush_color(self,color) :
        print("set_brush_color(self,color)",color)
-       self.color_brush=color
+       self.brush.setColor(color)
  
     def mousePressEvent(self, event):
         print("Scene.mousePressEvent()")
         self.begin = self.end = event.scenePos()
         self.item=self.itemAt(self.begin,QtGui.QTransform())
-        if self. item :
+        if self.item :
             self.offset =self.begin-self.item.pos()
+        elif self.tool == "poly":
+            print("button_press_event()")
+            point=event.scenePos()
+            print("coordonnes View  : event.pos() ",point)
+            # Ajout de point de polygone 
+            self.polygon.append(point)
                 
     def mouseMoveEvent(self, event):
         # print("Scene.mouseMoveEvent()",self.item)
@@ -53,5 +61,19 @@ class Scene (QtWidgets.QGraphicsScene) :
             self.item=None
         elif self.tool=='line' :
             self.addLine(self.begin.x(), self.begin.y(),self.end.x(), self.end.y(),self.pen)
+        elif self.tool=='rect' :
+            self.addRect(self.begin.x(), self.begin.y(),self.end.x()-self.begin.x(), self.end.y()-self.begin.y(),self.pen, self.brush)
+        elif self.tool=='poly' :
+            print("Polygone en cours de formation")
         else :
             print("no item selected and nothing to draw !")
+            
+    def mouseDoubleClickEvent(self, event):
+        
+        print("mouseDoubleClickEvent()")
+        qpoly=QtGui.QPolygonF(self.polygon)
+        qgpoly=QtWidgets.QGraphicsPolygonItem(qpoly)
+        qgpoly.setPen(self.pen)
+        qgpoly.setBrush(self.brush)
+        self.addItem(qgpoly)
+        del self.polygon[:]
