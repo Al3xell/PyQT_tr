@@ -30,46 +30,46 @@ On mettra en place deux classes :
    - MainWindow : fenêtre principale pour sélectionnesr les actions, héritage QMainWindow (main.py)
    - Scene  :   zone cliente pour l'interaction, héritage QWidget (scene.py)
 
-Fenêtre principale (main.py)
+Fenêtre principale (main.py) #
 ------------------
 
 La fenêtre principale servira à sélectionner les actions possibles sur la zone cliente.
 Il faudra donc créer les menus :
 
-File : New (Warning dialog)
+File : New (Warning dialog) #
        ------------
-       Open
-       Save        (File selection dialog)
-       Save As
+       Open #
+       Save        (File selection dialog) #
+       Save As #
        -----------
-       Exit (Question dialog)
+       Exit (Question dialog) #
 
-Tools : Line
-        Rectangle
-        Ellipse
-        Polygon
+Tools : Line #
+        Rectangle #
+        Ellipse #
+        Polygon #
         ----------
-        text 
-Style : Pen (submenu)
-          color  (Color selection  dialog)
-          line   (submenu) (QPen : mode solidLine, DotLine, DotDashLine ...
-          width  (submenu or dialog)
-        Brush (submenu)
-          color  (Color selection  dialog)
-          fill (submenu or dialog))(QBrush  : mode solidPattern VerticalPattern ...
-       Font (Font selection dialog)
-Help : About Us (Information dialog : Noms et Prenoms)
-       About Qt (Information dialog sur Qt/PyQt)
-       About the Application  (Information dialog : README)
+        text #
+Style : Pen (submenu) #
+          color  (Color selection  dialog) #
+          line   (submenu) (QPen : mode solidLine, DotLine, DotDashLine ... #
+          width  (submenu or dialog) #
+        Brush (submenu) #
+          color  (Color selection  dialog) #
+          fill (submenu or dialog))(QBrush  : mode solidPattern VerticalPattern ... #
+        Font (Font selection dialog) #
+Help : About Us (Information dialog : Noms et Prenoms) #
+       About Qt (Information dialog sur Qt/PyQt) #
+       About the Application  (Information dialog : README) #
 
 Il faudra également  proposer dans un menu surgissant (click droit sur la zone cliente)
 la sélection des caractéristiques de dessin (Tools,Style) afin de pouvoir les modifier
 sans sortir de la zone cliente : 
 
-Popup : Tools  (cf Tools de la barre d'actions )
-        Style  (cf Style de la barre d'actions )
+Popup : Tools  (cf Tools de la barre d'actions ) #
+        Style  (cf Style de la barre d'actions ) #
         ---------
-        Erase (Warning dialog)
+        Erase (Warning dialog) 
 
 
 Interaction sur la zone cliente (scene.py)
@@ -77,7 +77,7 @@ Interaction sur la zone cliente (scene.py)
 
 Tracé élastique : en cours de tracé, dessiner uniquement le contour de l'objet sans les caractéristiques de style associées (stylo)
 
-Tracé final  : on affiche l'objet graphique avec les  caractéristiques sélectionnés dans la fenêtre principale.
+Tracé final  : on affiche l'objet graphique avec les  caractéristiques sélectionnés dans la fenêtre principale. #
 
 Sélection et deplacement  : 
   - d'un seul item graphique

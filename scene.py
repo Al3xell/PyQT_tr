@@ -8,7 +8,9 @@ class Scene (QtWidgets.QGraphicsScene) :
     def __init__(self,parent=None) :
         QtWidgets.QGraphicsScene.__init__(self)
         self.name=None
+        self.path=None
         self.tool=None
+        self.font=("Helvetica [Cronyx]",10)
         self.begin,self.end,self.offset=QtCore.QPoint(0,0),QtCore.QPoint(0,0),QtCore.QPoint(0,0)
         self.item=None
         self.pen=QtGui.QPen()
@@ -63,6 +65,17 @@ class Scene (QtWidgets.QGraphicsScene) :
             self.addLine(self.begin.x(), self.begin.y(),self.end.x(), self.end.y(),self.pen)
         elif self.tool=='rect' :
             self.addRect(self.begin.x(), self.begin.y(),self.end.x()-self.begin.x(), self.end.y()-self.begin.y(),self.pen, self.brush)
+        elif self.tool=='eli' :
+            self.addEllipse(self.begin.x(), self.begin.y(),self.end.x()-self.begin.x(), self.end.y()-self.begin.y(),self.pen, self.brush)
+        elif self.tool=='text' :
+            text = QtWidgets.QInputDialog.getText(None, "Text", "Enter the text")
+            print(text)
+            if text :
+                print("Text choosen : ", text)
+                txt = self.addText(text[0])
+                txt.setPos(self.end.x(), self.end.y())
+                txt.setFont(QtGui.QFont(self.font[0], self.font[1]))
+        
         elif self.tool=='poly' :
             print("Polygone en cours de formation")
         else :
