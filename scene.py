@@ -13,6 +13,7 @@ class Scene (QtWidgets.QGraphicsScene) :
         self.font=("Helvetica [Cronyx]",10)
         self.begin,self.end,self.offset=QtCore.QPoint(0,0),QtCore.QPoint(0,0),QtCore.QPoint(0,0)
         self.item=None
+        self.item_remove=None
         self.pen=QtGui.QPen()
         self.pen.setColor(QtCore.Qt.red)
         self.pen.setWidth(3)

@@ -42,6 +42,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_open = QtWidgets.QAction(QtGui.QIcon('icons/open.png'), 'Open', self)
         self.action_open.setShortcut('Ctrl+O')
         self.action_open.setStatusTip('Open file')
+        
+        self.action_undo = QtWidgets.QAction(QtGui.QIcon('icons/undo.png'), 'Undo', self)
+        self.action_undo.setShortcut('Ctrl+Z')
+        self.action_undo.setStatusTip('Undo')
+        
+        self.action_redo = QtWidgets.QAction(QtGui.QIcon('icons/redo.png'), 'Redo', self)
+        self.action_redo.setShortcut('Ctrl+Y')
+        self.action_redo.setStatusTip('Redo')
 
         self.action_exit = QtWidgets.QAction(QtGui.QIcon('icons/exit.png'), 'Exit', self)
         self.action_exit.setShortcut('Ctrl+Q')
@@ -154,10 +162,14 @@ class MainWindow(QtWidgets.QMainWindow):
         menu_file.addAction(self.action_save)
         menu_file.addAction(self.action_save_as)
         menu_file.addSeparator()
+        menu_file.addAction(self.action_undo)
+        menu_file.addAction(self.action_redo)
+        menu_file.addSeparator()
         menu_file.addAction(self.action_exit)
 
         menu_tools = menubar.addMenu('&Tools')
         menu_tools.addAction(self.action_line)
+        menu_file.addAction(self.action_save_as)
         menu_tools.addAction(self.action_rect)
         menu_tools.addAction(self.action_poly)
         menu_tools.addAction(self.action_eli)
@@ -260,6 +272,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.action_new.triggered.connect(self.file_new)
         self.action_open.triggered.connect(self.file_open)
         self.action_save.triggered.connect(self.file_save)
+        self.action_undo.triggered.connect(self.undo)
+        self.action_redo.triggered.connect(self.redo)
         self.action_save_as.triggered.connect(self.file_save_as)
         self.action_exit.triggered.connect(self.file_exit)
         
@@ -327,6 +341,7 @@ class MainWindow(QtWidgets.QMainWindow):
         file_to_load = open(filename[0],"r")
         self.data_to_items(json.load(file_to_load))
         file_to_load.close()
+        self.scene.update()
         print(filename[0] + " opened !")
 
     def file_save_as(self):
@@ -572,7 +587,29 @@ class MainWindow(QtWidgets.QMainWindow):
         
         if answer == QtWidgets.QMessageBox.Yes:
             webbrowser.open('https://doc.qt.io/qtforpython/')
-        
+            
+    def undo(self):
+        if(self.scene.item_remove == None):
+            for index, item in enumerate(self.scene.items()):
+                if(index==0):
+                    item.setVisible(False)
+                    self.scene.update()
+                    self.scene.item_remove=item
+        else :
+            for index, item in enumerate(self.scene.items()):
+                if(index==1):
+                    item.setVisible(False)
+                    self.scene.removeItem(self.scene.item_remove)
+                    self.update()
+                    self.scene.item_remove=item
+                    
+    def redo(self):
+        if(self.scene.item_remove==None):
+            print("No item")
+        else :
+            self.scene.item_remove.setVisible(True)
+            self.scene.item_remove = None
+    
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:
             self.close()
